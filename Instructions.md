@@ -231,3 +231,50 @@ To view the contents of the output filtered vcf file you can navigate through it
 less sample1.filtered.vcf
 ```
 Or you can open it in the notepad editor from the Windows environment.
+
+### Part 5 - Functional annotation of the called genetic variants
+This is the part of the pipeline that we will functionally annotate the called genetic variants, an 
+essential step to try predict the effect or function of an individual variant.
+
+Given a list of variants and their genomic coordinates (like the vcf file you just inspected) we will perform functional annotations 
+for each one of them.
+
+Variants are annotated to annotation databases. An annotation database can be one of the following types:
+- Gene-based annotations: Identify which genes and proteins will be affected by the reported variant   
+Example databases: RefSeq genes, UCSC genes, ENSEMBL genes, GENCODE genes, AceView genes, ... .
+
+- Region-based annotations: Identify specific genomic regions possibly affected by the reported variant
+such as promoters, transcription f\actor binding sites, DNAse I hypersensitivity sites and others. 
+
+- Filter-based annotations: Cross listed variants with specific databases containing information about
+them.  
+For example, check which variants are reported in gnomAD populations and what's the allele  
+frequency for these variants in this database or calculate a CADD score for each variant.
+	Other example databases: 1000 Genome Project, Exome Aggregation Consortium (ExAC), 
+	Genome Aggregation Database (gnomAD), CADD score, PolyPhen score.
+
+We are going to use databases from all of the above three catergories to annotate our variants.
+
+The goal is to create a single file containing several columns with annotation information for each 
+variant.
+
+#### Annotate online using the [Variant Effect Predictor (VEP)](https://www.ensembl.org/vep) by Ensembl
+For this part we are not going to use a command line tool. We are going to use a web-based tool instead
+which is called [Variant Effect Predictor (VEP)](https://www.ensembl.org/vep) by Ensembl
+
+Please follow the instructions below:
+1. Open an internet browser (Mozilla Firefox, Google Chrome)
+
+2. Navigate to https://www.ensembl.org/Multi/Tools/VEP
+
+3. Fill the job form using:
+- Name for this job: sgul_workshop_ followed by your initials (e.g. sgul_workshop_DG)
+- Input data -> Or upload file: -> Choose file -> Navigate and select your sample1.filtered.vcf.gz file
+- Transcript database to use: Ensembl/GENCODE transcripts
+- Make sure you will leave Additional configurations field untouched using the pre-defined default fields.
+
+4. Click RUN
+
+5. Wait for the job to finish
+
+6. When finished, click [View results]
