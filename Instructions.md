@@ -175,7 +175,7 @@ will be used by the next step. Therefore, no changes will be made to our bam fil
 java -jar software/gatk-package-4.0.4.0-local.jar BaseRecalibrator -I sample1_sorted_unique.bam -R reference/chrM.fa \
 	--known-sites software/common_all_chrM.vcf.gz -O recal_data_table.txt
 ```
-1. Apply Base-Recalibration. This is the main and final step of BQSR.  The tool recalibrates the 
+2. Apply Base-Recalibration. This is the main and final step of BQSR.  The tool recalibrates the 
 base qualities of the input reads based on the recalibration table produced on the previous step and outputs a 
 new recalibrated BAM file:
 ```bash
@@ -183,4 +183,51 @@ java -jar software/gatk-package-4.0.4.0-local.jar ApplyBQSR -I sample1_sorted_un
 	--bqsr-recal-file recal_data_table.txt -O sample1_sorted_unique_recalibrated.bam
 ```
 
+### Variant Calling: Identifying single nuclotide variants and small indels in our aligned mitochndrial data
+This is the part of the pipeline that we will use the alignment data to call variants, i.e., differences 
+between the aligned reads and the used genome reference.
 
+2 steps are essential for variant calling:
+#### 1. HaplotypeCaller step
+The GATK pipeline calls variants (SNPs and small INDELS simultaneously) using a tool called HaplotypeCaller.
+This tool look through the alignments for regions with signs of variation (active regions). When it finds
+an active region region like this, it discards the existing alignment and completely reassembles the reads
+in that region making the calling more accurate.
+```bash
+java -jar software/gatk-package-4.0.4.0-local.jar HaplotypeCaller -I sample1_sorted_unique_recalibrated.bam \
+	-R reference/chrM.fa -G StandardAnnotation \
+	-bamout sample1_sorted_unique_recalibrated.bamout.bam \
+	-O sample1.vcf
+```
+
+#### 2. Filtering of the called variants
+Filter called variants. We will use GATK's VariantFiltration tool to filter the variants called previously.
+Here we hard-filter variants based on certain criteria. In this particular example we will use:
+-Genotype Quality less than 30.0: GQ < 30 to tag variants with low genotype quality
+-Quality of Depth less than 1.5: QD < 1.5 to tag variants with low quality of depth
+-Approximate read depth less than 6: DP < 6 to tag variants with low read coverage
+-Strand Odds Ratio more than 10: SOR > 10 to tag variants with strand bias
+
+This tool will TAG and NOT REMOVE the variants that false the Quality Control (fullfill at least one of
+the above criteria).
+```bash
+java -jar software/gatk-package-4.0.4.0-local.jar VariantFiltration -V sample1.vcf -R reference/chrM.fa \
+	--genotype-filter-expression "GQ < 30.0" --genotype-filter-name "LowGQ" \
+	--filter-expression "QD < 1.5" --filter-name "LowQD" \
+	--filter-expression "DP < 6" --filter-name "LowCoverage" \
+	--filter-expression "SOR > 10.0" --filter-name "StrandBias" \
+	-O sample1.filtered.vcf
+```
+
+The filtered/tagged variants will have filter-specific information on the FILTER column of the 
+output vcf file. The variants that passed the filters will have a PASS label on their FILTER column.
+Similarly to the deduplication step the concept here is to tag the problematic entries rather than 
+to delete them.
+
+---
+#### Inspect the output vcf file sample1.filtered.vcf
+To view the contents of the output filtered vcf file you can navigate through it by typing:
+```bash
+less sample1.filtered.vcf
+```
+Or you can open it in the notepad editor from the Windows environment.
