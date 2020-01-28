@@ -21,7 +21,7 @@ head reference/chrM.fa
 
 software/bwa index reference/chrM.fa
 
-##Prepare th FASTA file for use as a referenence for the genome analysis toolkit (GATK)###
+##Prepare the FASTA file for use as a referenence for the genome analysis toolkit (GATK)###
 
 """Creat two needed files to access and safety check access to the reference files: a .dict dictionary 
 of the contig names and sizes and a .fai fasta index file to allow efficient random access to the 
@@ -52,6 +52,14 @@ java -jar software/gatk-package-4.0.4.0-local.jar CreateSequenceDictionary -R re
 
 ##Trimming by quality and adapter removal with fastp
 
+"""The pile of reads coming out of the sequencer is stored in FASTQ files. As a typical paired-end
+sequencing experiment, each sequenced sample will produce two FASTQ files; One for the first pair of reads
+and one for the second pair of reads."""
+
+"""FASTQ files are usually quite big files containing information for all the reads produced. To get an insight
+on how a FASTQ file look like we can simply open its first 12 lines:"""
+head -n 12 sample1_r1.fastq 
+
 """With the program fastp we are assesing the quality of our sequence fastq data, which we can visualise in 
 the output HTML report file"""
 
@@ -64,10 +72,9 @@ software/fastp -i sample1_r1.fastq -I sample1_r2.fastq -o sample1_out.R1.fq.gz -
 
 
 ##Alternative way of visualising the quality control of the reads
-
 """An alternative way of visualising the quality of our sequence fastq data is fastqc. This tool will not 
 perform any trimming or any other data processing. It will simply create a quality report in HTML format."""
-software/fastqc sample1_out.R1.fq.gz sample1_out.R2.fq.gz
+software/fastqc sample1_r1.fastq sample1_r2.fastq sample1_out.R1.fq.gz sample1_out.R2.fq.gz
 
 """This is the most common way of visualising sequencing reads quality and most of you have been or will be
 given a report like this."""
@@ -130,7 +137,7 @@ steps."""
 
 #base quality score recalibrations with GATK
 
-"""We perform Base quality score recalibration (BQSR) to recalculate the base calling scores
+"""We perform base quality score recalibration (BQSR) to recalculate the base calling scores
 (it is a per sequenced base score) that the sequencer has determined. It's an important step as the short
 variant calling algorithms used downstream rely heavily on the quality score assigned to the individual base
 calls in each sequence read. BQSR comprises of two steps:"""
@@ -152,13 +159,6 @@ java -jar software/gatk-package-4.0.4.0-local.jar ApplyBQSR -I sample1_sorted_un
 
 
 ##################################         PART4      ###################################################       
-######################### Visualisation of the sequence data in IGV  ####################################
-#########################################################################################################
-
-IGV
-
-
-##################################         PART5      ###################################################       
 ######## Identifying single nuclotide variants and small indels in our aligned mitochndrial data ########
 #########################################################################################################
 
@@ -175,7 +175,7 @@ in that region making the calling more accurate."""
 java -jar software/gatk-package-4.0.4.0-local.jar HaplotypeCaller -I sample1_sorted_unique_recalibrated.bam \
 	-R reference/chrM.fa -G StandardAnnotation \
 	-bamout sample1_sorted_unique_recalibrated.bamout.bam \
-	-O sample1.vcf.gz
+	-O sample1.vcf
 
 """Filter called variants. We will use GATK's VariantFiltration tool to filter the variants called previously.
 Here we hard-filter variants based on certain criteria. In this particular example we will use:
@@ -187,19 +187,19 @@ Here we hard-filter variants based on certain criteria. In this particular examp
 This tool will TAG and NOT REMOVE the variants that false the Quality Control (fullfill at least one of
 the above criteria)."""
 
-java -jar software/gatk-package-4.0.4.0-local.jar VariantFiltration -V sample1.vcf.gz -R reference/chrM.fa \
+java -jar software/gatk-package-4.0.4.0-local.jar VariantFiltration -V sample1.vcf -R reference/chrM.fa \
 	--genotype-filter-expression "GQ < 30.0" --genotype-filter-name "LowGQ" \
 	--filter-expression "QD < 1.5" --filter-name "LowQD" \
 	--filter-expression "DP < 6" --filter-name "LowCoverage" \
 	--filter-expression "SOR > 10.0" --filter-name "StrandBias" \
-	-O sample1.filtered.vcf.gz
+	-O sample1.filtered.vcf
 	
 """The filtered/tagged variants will have filter-specific information on the FILTER column of the 
 output vcf file. The variants that passed the filters will have a PASS label on their FILTER column.
 Similarly to the deduplication step the concept here is to tag the problematic entries rather than 
 to delete them."""
  
-##################################         PART6      ###################################################       
+##################################         PART5      ###################################################       
 ######################### Functional annotation of the called genetic variants  #########################
 #########################################################################################################
 
@@ -224,10 +224,11 @@ The goal is to create a single file containing several columns with annotation i
 variant.
 """
 
-/software/bcftools norm -m-both -o sample1.norm1.vcf.gz sample1.vcf.gz
-$BCFTOOLS norm -f reference/chrM.fa -o sample1.norm1.vcf.gz sample1.norm1.vcf.gz
+##################################         PART6      ###################################################       
+############################## Aligment & Variants visualisation with IGV ###############################
+#########################################################################################################
 
-
+#add the code!!!
 
 
 
