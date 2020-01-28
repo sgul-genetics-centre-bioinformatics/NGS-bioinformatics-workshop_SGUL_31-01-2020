@@ -4,9 +4,10 @@ Friday, January 31, 2020, 14:00-17:00
 Room H5.2
 
 ## Organisers: 
-- [Dr Alan Pittman](https://github.com/alanmichaelpittman100), Lecturer in Bioinformatics, SGUL
+- [Dr Alan Pittman](https://github.com/alanmichaelpittman100), Lecturer in Bioinformatics, SGUL  
 	[✉ apittman@sgul.ac.uk](mailto:apittman@sgul.ac.uk?subject=SGUL%2Workshop)
-- [Dionysios Grigoriadis](https://github.com/digrigor), Bioinformatician, SGUL
+- [Dionysios Grigoriadis](https://github.com/digrigor), Bioinformatician, SGUL  
+	[✉ dgrigori@sgul.ac.uk](mailto:dgrigori@sgul.ac.uk?subject=SGUL%2Workshop)
 - [SGUL Bioinformatics Unit](http://bioinformatics.sgul.ac.uk/)
 - [SGUL Genetics Centre Bioinformatics](https://github.com/sgul-genetics-centre-bioinformatics)
 
