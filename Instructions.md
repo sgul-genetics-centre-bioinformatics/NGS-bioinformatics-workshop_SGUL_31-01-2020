@@ -5,6 +5,7 @@ Room H5.2
 
 ## Organisers: 
 - [Dr Alan Pittman](https://github.com/alanmichaelpittman100), Lecturer in Bioinformatics, SGUL
+	[✉ apittman@sgul.ac.uk](mailto:apittman@sgul.ac.uk?subject=SGUL%2Workshop)
 - [Dionysios Grigoriadis](https://github.com/digrigor), Bioinformatician, SGUL
 - [SGUL Bioinformatics Unit](http://bioinformatics.sgul.ac.uk/)
 - [SGUL Genetics Centre Bioinformatics](https://github.com/sgul-genetics-centre-bioinformatics)
