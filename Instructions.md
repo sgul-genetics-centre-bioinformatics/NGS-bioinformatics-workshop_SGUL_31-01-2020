@@ -1,3 +1,4 @@
+![alt text](https://ukeducationguide.com/wp-content/uploads/2014/10/stgeorgeslondon.jpg "St George's, University of London")
 # SGUL Workshop: Next Generation Sequencing data analysis
 Friday, January 31, 2020, 14:00-17:00  
 [St George's, University of London](https://www.sgul.ac.uk/)  
