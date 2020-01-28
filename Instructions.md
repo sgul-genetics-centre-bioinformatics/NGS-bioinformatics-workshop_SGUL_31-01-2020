@@ -73,4 +73,35 @@ We use CreateSequenceDictionary.jar from Picard tools to create a .dict file fro
 java -jar software/gatk-package-4.0.4.0-local.jar CreateSequenceDictionary -R reference/chrM.fa -O reference/chrM.dict
 ```
 This produces a SAM-style header file; simply describing the contents of our fasta file.
+
+### Part 2 - Quality control of our mitochondrial NGS sequence data prior to alignments
+#### View and inspect a FASTQ file
+The pile of reads coming out of the sequencer is stored in FASTQ files. As a typical paired-end
+sequencing experiment, each sequenced sample will produce two FASTQ files; One for the first pair of reads
+and one for the second pair of reads.  
+
+FASTQ files are usually quite big files containing information for all the reads produced. To get an insight
+on how a FASTQ file look like we can simply open its first 12 lines:
+```bash
+head -n 12 sample1_r1.fastq
+```
+You can also try this command to scroll and navigate through the fastq file
+```bash
+more sample1_r1.fastq
+```
 ---
+#### Trimming by quality and adapter removal with fastp
+This step can achieve 2 main aims:
+With the program [fastp](https://github.com/OpenGene/fastp) we can: 
+1. Assess the quality of our sequence fastq data, which we can visualise in 
+the output HTML report file (which you can open with an internet browser).
+2. Trim off low quality trailing bases from our sequence reads and detect 
+and remove and remaining unwanted adapter sequencenes
+
+To do that:
+```bash
+software/fastp -i sample1_r1.fastq -I sample1_r2.fastq -o sample1_out.R1.fq.gz -O sample1_out.R2.fq.gz --html \
+ sample1_results.html --json sample1_results.json --report_title sample1_results
+```
+
+#### Alternative way of visualising the quality control of the reads with [FASTQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
