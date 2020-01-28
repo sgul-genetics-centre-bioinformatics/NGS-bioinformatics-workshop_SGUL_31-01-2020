@@ -28,26 +28,30 @@ Specifically:
 
 ## Hands-on Tutorial
 ### Part 1 - Preparing our mitochondrial reference sequence fasta files
-**Download the human mitochondrial refernce sequence:**
+#### Download the human mitochondrial refernce sequence:
 ```bash
 mkdir reference
 wget --timestamping 'ftp://hgdownload.cse.ucsc.edu/goldenPath/hg38/chromosomes/chrM.fa.gz' -O reference/chrM.fa.gz
 ```
-**Unzip the compressed chrM fasta txt file**
+---
+#### Unzip the compressed chrM fasta txt file
 ```bash
 gunzip reference/chrM.fa.gz
 ```
-**View the top 10 lines of the file with the linux 'head' commands**
+---
+#### View the top 10 lines of the file with the linux 'head' commands
 ```bash
 head reference/chrM.fa
 ```
-**Prepare the FASTA file for use as a referenence for BWA**  
+---
+#### Prepare the FASTA file for use as a referenence for BWA  
 For the aligment algorithms of BWA, we first need to construct the FM-index for the reference genome 
 (the index command):
 ```bash
 software/bwa index reference/chrM.fa
 ```
-**Prepare the FASTA file for use as a referenence for the [genome analysis toolkit (GATK)](https://gatk.broadinstitute.org/hc/en-us/articles/360036194592-Getting-started-with-GATK4)**  
+---
+#### Prepare the FASTA file for use as a referenence for the [genome analysis toolkit (GATK)](https://gatk.broadinstitute.org/hc/en-us/articles/360036194592-Getting-started-with-GATK4)  
 Create two needed files to access and safety check access to the reference files:
 - a .DICT dictionary of the contig names and sizes 
 - a .FAI fasta index file to allow efficient random access to the reference bases.
@@ -69,3 +73,4 @@ We use CreateSequenceDictionary.jar from Picard tools to create a .dict file fro
 java -jar software/gatk-package-4.0.4.0-local.jar CreateSequenceDictionary -R reference/chrM.fa -O reference/chrM.dict
 ```
 This produces a SAM-style header file; simply describing the contents of our fasta file.
+---
