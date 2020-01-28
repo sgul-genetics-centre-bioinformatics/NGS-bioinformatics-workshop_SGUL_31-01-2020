@@ -27,6 +27,8 @@ Specifically:
 -	Visualisation of alignments and called variants.
 
 ## Hands-on Tutorial
+
+---
 ### Part 1 - Preparing our mitochondrial reference sequence fasta files
 #### Download the human mitochondrial refernce sequence:
 ```bash
@@ -74,6 +76,7 @@ java -jar software/gatk-package-4.0.4.0-local.jar CreateSequenceDictionary -R re
 ```
 This produces a SAM-style header file; simply describing the contents of our fasta file.
 
+---
 ### Part 2 - Quality control of our mitochondrial NGS sequence data prior to alignments
 #### View and inspect a FASTQ file
 The pile of reads coming out of the sequencer is stored in FASTQ files. As a typical paired-end
@@ -113,6 +116,7 @@ software/fastqc sample1_r1.fastq sample1_r2.fastq sample1_out.R1.fq.gz sample1_o
 This is the most common way of visualising sequencing reads quality and most of you have been or will be
 given a report like this. To learn more click [here](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/).
 
+---
 ### Part 3 - Alignment of the mitochndrial fastq sequence data to the mitochondrial reference sequence using [BWA](http://bio-bwa.sourceforge.net/)
 #### Alignment of the mitochndrial fastq sequence data to the mitochondrial reference sequence using BWA
 [BWA](http://bio-bwa.sourceforge.net/) is a software package for mapping DNA sequences against a large reference genome, such as the 
@@ -182,8 +186,8 @@ new recalibrated BAM file:
 java -jar software/gatk-package-4.0.4.0-local.jar ApplyBQSR -I sample1_sorted_unique.bam -R reference/chrM.fa \
 	--bqsr-recal-file recal_data_table.txt -O sample1_sorted_unique_recalibrated.bam
 ```
-
-### Variant Calling: Identifying single nuclotide variants and small indels in our aligned mitochndrial data
+---
+### Part 4: Variant Calling: Identifying single nuclotide variants and small indels in our aligned mitochndrial data
 This is the part of the pipeline that we will use the alignment data to call variants, i.e., differences 
 between the aligned reads and the used genome reference.
 
@@ -232,6 +236,7 @@ less sample1.filtered.vcf
 ```
 Or you can open it in the notepad editor from the Windows environment.
 
+---
 ### Part 5 - Functional annotation of the called genetic variants
 This is the part of the pipeline that we will functionally annotate the called genetic variants, an 
 essential step to try predict the effect or function of an individual variant.
