@@ -105,3 +105,10 @@ software/fastp -i sample1_r1.fastq -I sample1_r2.fastq -o sample1_out.R1.fq.gz -
 ```
 
 #### Alternative way of visualising the quality control of the reads with [FASTQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
+An alternative way of visualising the quality of our sequence fastq data is fastqc. This tool will not 
+perform any trimming or any other data processing. It will simply create a quality report in HTML format for the raw and the filtered reads.
+```bash
+software/fastqc sample1_r1.fastq sample1_r2.fastq sample1_out.R1.fq.gz sample1_out.R2.fq.gz
+```
+This is the most common way of visualising sequencing reads quality and most of you have been or will be
+given a report like this. To learn more click [here](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/).
