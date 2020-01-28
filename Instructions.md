@@ -112,3 +112,75 @@ software/fastqc sample1_r1.fastq sample1_r2.fastq sample1_out.R1.fq.gz sample1_o
 ```
 This is the most common way of visualising sequencing reads quality and most of you have been or will be
 given a report like this. To learn more click [here](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/).
+
+### Part 3 - Alignment of the mitochndrial fastq sequence data to the mitochondrial reference sequence using [BWA](http://bio-bwa.sourceforge.net/)
+#### Alignment of the mitochndrial fastq sequence data to the mitochondrial reference sequence using BWA
+[BWA](http://bio-bwa.sourceforge.net/) is a software package for mapping DNA sequences against a large reference genome, such as the 
+human genome.  
+
+Illumina/454/IonTorrent [paired-end reads](https://emea.illumina.com/science/technology/next-generation-sequencing/plan-experiments/paired-end-vs-single-read.html) longer than ~70bp we use BWA MEM algorithm to align the fastq 
+data to the reference genome
+
+We will align our cleaned FASTQ files to the reference mitochondrial genome using BWA with the following
+command:
+```bash
+software/bwa mem reference/chrM.fa sample1_out.R1.fq.gz sample1_out.R2.fq.gz -R '@RG\tID:sample1\tSM:sample1\tLB:sample1\tPL:ILLUMINA' -o sample1.sam 
+```
+The software BWA mem has taken our cleaned fastq files, the indexed mitochondrial reference sequence
+as arguments and generated the alignemnt file in sequence alignment format (.SAM) as output
+
+---
+#### Converting the .SAM output to the compressed common binary alignment format (.BAM)
+BAM format has a lower data footprint than sam (smaller size on the disk), yet retains all of the same
+information
+```bash
+software/samtools view -Sb sample1.sam -o sample1.bam
+```
+#### Sorting the .BAM file
+We sort the aligment file (.BAM) by genomic coordinates so we will be able to then index it (next step).
+Only coordinates-sorted alignment files can be indexed
+```bash
+software/samtools sort sample1.bam -o sample1_sorted.bam
+```
+
+#### Indexing the .BAM file
+Index a coordinate-sorted BAM or CRAM file for fast random access.
+```bash
+software/samtools index sample1_sorted.bam
+```
+This command created a .bai file that is a companion file to the main .bam file. This file acts like an
+external table of contents, and allows programs to jump directly to specific parts of the bam file without
+reading through all of the sequences. This step will make the donwstream steps significantly faster.
+
+---
+#### Deduplication the aligned reads with picard tools
+The deduplication step locates and tags duplicate reads in a BAM or SAM file, where duplicate reads are
+defined as originating from a single fragment of DNA. Duplicates can arise during sample preparation e.g.
+library construction using PCR. Read more [here](https://gatk.broadinstitute.org/hc/en-us/articles/360036350292-MarkDuplicates-Picard-)
+```bash
+java -jar software/gatk-package-4.0.4.0-local.jar MarkDuplicates -I sample1_sorted.bam -O sample1_sorted_unique.bam \
+	-M sample1_picard_metrics.txt
+```
+
+---
+#### Base quality score recalibrations with GATK
+We perform base quality score recalibration (BQSR) to recalculate the base calling scores
+(it is a per sequenced base score) that the sequencer has determined. It's an important step as the short
+variant calling algorithms used downstream rely heavily on the quality score assigned to the individual base
+calls in each sequence read. BQSR comprises of two steps:
+1. BaseRecalibrator. This tool generates a recalibration table based on various factors of the aligned reads such as 
+read group, reported quality score, machine cycle, and nucleotide context. The file (table) created on this step
+will be used by the next step. Therefore, no changes will be made to our bam file on this step.
+```bash
+java -jar software/gatk-package-4.0.4.0-local.jar BaseRecalibrator -I sample1_sorted_unique.bam -R reference/chrM.fa \
+	--known-sites software/common_all_chrM.vcf.gz -O recal_data_table.txt
+```
+1. Apply Base-Recalibration. This is the main and final step of BQSR.  The tool recalibrates the 
+base qualities of the input reads based on the recalibration table produced on the previous step and outputs a 
+new recalibrated BAM file:
+```bash
+java -jar software/gatk-package-4.0.4.0-local.jar ApplyBQSR -I sample1_sorted_unique.bam -R reference/chrM.fa \
+	--bqsr-recal-file recal_data_table.txt -O sample1_sorted_unique_recalibrated.bam
+```
+
+
