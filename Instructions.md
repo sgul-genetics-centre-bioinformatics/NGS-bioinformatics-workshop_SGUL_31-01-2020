@@ -1,4 +1,4 @@
-![alt text](https://ukeducationguide.com/wp-content/uploads/2014/10/stgeorgeslondon.jpg "St George's, University of London")
+![alt text](https://ukeducationguide.com/wp-content/uploads/2014/10/stgeorgeslondon.jpg "St George's, University of London") 
 # SGUL Workshop: Next Generation Sequencing data analysis
 Friday, January 31, 2020, 14:00-17:00  
 [St George's, University of London](https://www.sgul.ac.uk/)  
@@ -117,7 +117,7 @@ perform any trimming or any other data processing. It will simply create a quali
 software/fastqc sample1_r1.fastq sample1_r2.fastq sample1_out.R1.fq.gz sample1_out.R2.fq.gz
 ```
 This is the most common way of visualising sequencing reads quality and most of you have been or will be
-given a report like this. To learn more click [here](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/).
+given a report like this. To learn more click [here](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/).  
 
 ---
 ### Part 3 - Alignment of the mitochndrial fastq sequence data to the mitochondrial reference sequence using [BWA](http://bio-bwa.sourceforge.net/)
