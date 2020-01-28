@@ -267,16 +267,16 @@ variant.
 For this part we are not going to use a command line tool. We are going to use a web-based tool instead
 which is called [Variant Effect Predictor (VEP)](https://www.ensembl.org/vep) by Ensembl
 
-Please follow the instructions below:
+**Please follow the instructions below:**
 1. Open an internet browser (Mozilla Firefox, Google Chrome)
 
 2. Navigate to https://www.ensembl.org/Multi/Tools/VEP
 
 3. Fill the job form using:
-- Name for this job: sgul_workshop_ followed by your initials (e.g. sgul_workshop_DG)
-- Input data -> Or upload file: -> Choose file -> Navigate and select your sample1.filtered.vcf.gz file
-- Transcript database to use: Ensembl/GENCODE transcripts
-- Make sure you will leave Additional configurations field untouched using the pre-defined default fields.
+	- Name for this job: sgul_workshop_ followed by your initials (e.g. sgul_workshop_DG)
+	- Input data -> Or upload file: -> Choose file -> Navigate and select your sample1.filtered.vcf.gz file
+	- Transcript database to use: Ensembl/GENCODE transcripts
+	- Make sure you will leave Additional configurations field untouched using the pre-defined default fields.
 
 4. Click RUN
 
