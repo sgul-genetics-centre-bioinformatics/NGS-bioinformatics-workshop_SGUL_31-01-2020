@@ -90,7 +90,7 @@ and remove and remaining unwanted adapter sequencenes
 To do that:
 ```bash
 software/fastp -i sample1_r1.fastq -I sample1_r2.fastq -o sample1_out.R1.fq.gz -O sample1_out.R2.fq.gz --html \
- sample1_results.html --json sample1_results.json --report_title sample1_results
+sample1_results.html --json sample1_results.json --report_title sample1_results
 ```
 
 #### Alternative way of visualising the quality control of the reads with [FASTQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
@@ -114,7 +114,7 @@ data to the reference genome
 We will align our cleaned FASTQ files to the reference mitochondrial genome using BWA with the following
 command:
 ```bash
-software/bwa mem reference/chrM.fa sample1_out.R1.fq.gz sample1_out.R2.fq.gz -R '@RG\tID:sample1\tSM:sample1\tLB:sample1\tPL:ILLUMINA' -o sample1.sam 
+software/bwa mem reference/chrM.fa sample1_out.R1.fq.gz sample1_out.R2.fq.gz -R '@RG\tID:sample1\tSM:sample1\tLB:sample1\tPL:ILLUMINA' \ -o sample1.sam 
 ```
 The software BWA mem has taken our cleaned fastq files, the indexed mitochondrial reference sequence
 as arguments and generated the alignemnt file in sequence alignment format (.SAM) as output
@@ -163,14 +163,14 @@ read group, reported quality score, machine cycle, and nucleotide context. The f
 will be used by the next step. Therefore, no changes will be made to our bam file on this step.
 ```bash
 java -jar software/gatk-package-4.0.4.0-local.jar BaseRecalibrator -I sample1_sorted_unique.bam -R reference/chrM.fa \
-	--known-sites software/common_all_chrM.vcf.gz -O recal_data_table.txt
+--known-sites software/common_all_chrM.vcf.gz -O recal_data_table.txt
 ```
 2. Apply Base-Recalibration. This is the main and final step of BQSR.  The tool recalibrates the 
 base qualities of the input reads based on the recalibration table produced on the previous step and outputs a 
 new recalibrated BAM file:
 ```bash
 java -jar software/gatk-package-4.0.4.0-local.jar ApplyBQSR -I sample1_sorted_unique.bam -R reference/chrM.fa \
-	--bqsr-recal-file recal_data_table.txt -O sample1_sorted_unique_recalibrated.bam
+--bqsr-recal-file recal_data_table.txt -O sample1_sorted_unique_recalibrated.bam
 ```
 ---
 ### Part 4: Variant Calling: Identifying single nuclotide variants and small indels in our aligned mitochndrial data
@@ -185,9 +185,9 @@ an active region region like this, it discards the existing alignment and comple
 in that region making the calling more accurate.
 ```bash
 java -jar software/gatk-package-4.0.4.0-local.jar HaplotypeCaller -I sample1_sorted_unique_recalibrated.bam \
-	-R reference/chrM.fa -G StandardAnnotation \
-	-bamout sample1_sorted_unique_recalibrated.bamout.bam \
-	-O sample1.vcf
+-R reference/chrM.fa -G StandardAnnotation \
+-bamout sample1_sorted_unique_recalibrated.bamout.bam \
+-O sample1.vcf
 ```
 
 #### 2. Filtering of the called variants
@@ -202,11 +202,11 @@ This tool will TAG and NOT REMOVE the variants that false the Quality Control (f
 the above criteria).
 ```bash
 java -jar software/gatk-package-4.0.4.0-local.jar VariantFiltration -V sample1.vcf -R reference/chrM.fa \
-	--genotype-filter-expression "GQ < 30.0" --genotype-filter-name "LowGQ" \
-	--filter-expression "QD < 1.5" --filter-name "LowQD" \
-	--filter-expression "DP < 6" --filter-name "LowCoverage" \
-	--filter-expression "SOR > 10.0" --filter-name "StrandBias" \
-	-O sample1.filtered.vcf
+--genotype-filter-expression "GQ < 30.0" --genotype-filter-name "LowGQ" \
+--filter-expression "QD < 1.5" --filter-name "LowQD" \
+--filter-expression "DP < 6" --filter-name "LowCoverage" \
+--filter-expression "SOR > 10.0" --filter-name "StrandBias" \
+-O sample1.filtered.vcf
 ```
 
 The filtered/tagged variants will have filter-specific information on the FILTER column of the 
