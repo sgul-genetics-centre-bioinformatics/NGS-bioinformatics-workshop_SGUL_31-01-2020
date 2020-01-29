@@ -28,5 +28,3 @@ Specifically:
 -	Variant Calling and Filtration.
 -	Annotation of the called variants.
 -	Visualisation of alignments and called variants.
-
-# Set up
