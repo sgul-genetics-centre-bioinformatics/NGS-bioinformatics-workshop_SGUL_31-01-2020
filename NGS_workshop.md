@@ -274,6 +274,7 @@ VEP also has a [command line stand alone version](http://www.ensembl.org/info/do
 
 6. When finished, click [View results].
 
+---
 ### Part 6: Aligment & Variants visualisation with [Integrative Genomics Viewer (IGV)](https://igv.org/)
 
 This is the part of the pipeline that we will visualise the alignments generated in **Part 3** and the filtered variant calls generated in **Part 4**.
