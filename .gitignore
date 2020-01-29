@@ -8,8 +8,6 @@ sample1_out.R2_fastqc.html
 sample1_out.R2_fastqc.zip
 sample1_out.R2.fq.gz
 sample1_picard_metrics.txt
-sample1_r1.fastq
-sample1_r2.fastq
 sample1_results.html
 sample1_results.json
 sample1.sam
@@ -55,13 +53,4 @@ chrM.fa.bwt
 chrM.fa.fai
 chrM.fa.pac
 chrM.fa.sa
-software/:
-bwa
-common_all_chrM.vcf.gz
-common_all_chrM.vcf.gz.tbi
-fastp
-fastqc
-gatk-package-4.0.4.0-local.jar
-igv.sh
-picard.jar
-samtools
+

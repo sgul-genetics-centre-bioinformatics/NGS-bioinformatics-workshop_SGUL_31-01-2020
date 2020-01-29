@@ -23,8 +23,9 @@ software/bwa index reference/chrM.fa
 
 ##Prepare the FASTA file for use as a referenence for the genome analysis toolkit (GATK)###
 
-"""Creat two needed files to access and safety check access to the reference files: a .dict dictionary 
-of the contig names and sizes and a .fai fasta index file to allow efficient random access to the 
+"""Creat two needed files to access and safety check access to the reference files:
+- a .DICT dictionary of the contig names and sizes
+- a .FAI fasta index file to allow efficient random access to the 
 reference bases. You have to generate these files in order to be able to use a Fasta file as reference."""
 
 ##Creating the fasta index file
@@ -60,24 +61,30 @@ and one for the second pair of reads."""
 on how a FASTQ file look like we can simply open its first 12 lines:"""
 head -n 12 sample1_r1.fastq 
 
-"""With the program fastp we are assesing the quality of our sequence fastq data, which we can visualise in 
-the output HTML report file"""
+"""You can also try this command to scroll and navigate through the fastq file"""
+more sample1_r1.fastq
 
-"""In addition to assesing the quality of our sequence data, fastp will trim off low quality trailing bases 
-from our sequence reads and detect and remove and remaining unwanted adapter sequencenes"""
+"""With the program fastp we can
+1. Assess the quality of our sequence fastq data, which we can visualise in 
+the output HTML report file (which you can open with an internet browser).
 
-"""new cleaned fastq files are produced ready for the next steps"""
+2. Trim off low quality trailing bases from our sequence reads and detect 
+and remove and remaining unwanted adapter sequencenes
+
+To do that:"""
 software/fastp -i sample1_r1.fastq -I sample1_r2.fastq -o sample1_out.R1.fq.gz -O sample1_out.R2.fq.gz --html \
  sample1_results.html --json sample1_results.json --report_title sample1_results
 
 
-##Alternative way of visualising the quality control of the reads
+##Alternative way of visualising the quality control of the reads with FASTQC
 """An alternative way of visualising the quality of our sequence fastq data is fastqc. This tool will not 
-perform any trimming or any other data processing. It will simply create a quality report in HTML format."""
+perform any trimming or any other data processing. It will simply create a quality report in HTML format for the
+raw and the filtered reads."""
 software/fastqc sample1_r1.fastq sample1_r2.fastq sample1_out.R1.fq.gz sample1_out.R2.fq.gz
 
 """This is the most common way of visualising sequencing reads quality and most of you have been or will be
-given a report like this."""
+given a report like this. To learn more visit: http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/"""
+
  
 ##################################         PART3      ###################################################       
 ###Alignment of the mitochndrial fastq sequence data to the mitochondrial reference sequence using BWA###
@@ -91,24 +98,24 @@ human genome."""
 """Illumina/454/IonTorrent paired-end reads longer than ~70bp we use BWA MEM algorithm to align the fastq 
 data to the reference genome"""
 
-"""We will align our cleaned fastq files to the reference mitochondrial genome using BWA with the following
+"""We will align our cleaned FASTQ files to the reference mitochondrial genome using BWA with the following
 command;"""  
 
 software/bwa mem reference/chrM.fa sample1_out.R1.fq.gz sample1_out.R2.fq.gz -R '@RG\tID:sample1\tSM:sample1\tLB:sample1\tPL:ILLUMINA' -o sample1.sam 
 
 """The software BWA mem has taken our cleaned fastq files, the indexed mitochondrial reference sequence
-as arguments and generated the alignemnt file in sequence alignment format (.sam) as output"""
+as arguments and generated the alignemnt file in sequence alignment format (.SAM) as output"""
 
-##converting the .sam output to the compressed common binary alignment format (.bam)
+##converting the .SAM output to the compressed common binary alignment format (.BAM)
 
-"""bam format has a lower data footprint than sam (smaller size on the disk), yet retains all of the same
+"""BAM format has a lower data footprint than sam (smaller size on the disk), yet retains all of the same
 information"""
 
 software/samtools view -Sb sample1.sam -o sample1.bam
 
-##sorting the .bam file
+##sorting the .BAM file
 
-"""We sort the aligment file (.bam) by genomic coordinates so we will be able to then index it (next step).
+"""We sort the aligment file (.BAM) by genomic coordinates so we will be able to then index it (next step).
 Only coordinates-sorted alignment files can be indexed"""
 
 software/samtools sort sample1.bam -o sample1_sorted.bam
@@ -123,7 +130,7 @@ software/samtools index sample1_sorted.bam
 external table of contents, and allows programs to jump directly to specific parts of the bam file without
 reading through all of the sequences. This step will make the donwstream steps significantly faster."""
 
-##deduplicate with picard tools
+##Deduplicate the aligned reads with picard tools
 
 """The deduplication step locates and tags duplicate reads in a BAM or SAM file, where duplicate reads are
 defined as originating from a single fragment of DNA. Duplicates can arise during sample preparation e.g.
@@ -158,25 +165,28 @@ java -jar software/gatk-package-4.0.4.0-local.jar ApplyBQSR -I sample1_sorted_un
 	--bqsr-recal-file recal_data_table.txt -O sample1_sorted_unique_recalibrated.bam
 
 
-##################################         PART4      ###################################################       
-######## Identifying single nuclotide variants and small indels in our aligned mitochndrial data ########
-#########################################################################################################
+##################################         PART4      ######################################################    
+# Variant Calling: Identifying single nuclotide variants and small indels in our aligned mitochndrial data #
+############################################################################################################
 
 """This is the part of the pipeline that we will use the alignment data to call variants, i.e., differences 
 between the aligned reads and the used genome reference"""
 
 ##Variant Calling with GATK
 
-"""GATK pipeline calls variants (SNPs and small INDELS simultaneously) using a tool called HaplotypeCaller.
+"""2 Steps are essential for variant calling:"""
+
+#1) HaplotypeCaller
+"""1) HaplotypeCaller: GATK pipeline calls variants (SNPs and small INDELS simultaneously) using a tool called HaplotypeCaller.
 This tool look through the alignments for regions with signs of variation (active regions). When it finds
 an active region region like this, it discards the existing alignment and completely reassembles the reads
 in that region making the calling more accurate."""
-
 java -jar software/gatk-package-4.0.4.0-local.jar HaplotypeCaller -I sample1_sorted_unique_recalibrated.bam \
 	-R reference/chrM.fa -G StandardAnnotation \
 	-bamout sample1_sorted_unique_recalibrated.bamout.bam \
 	-O sample1.vcf
 
+#2) Filtering of the called variants
 """Filter called variants. We will use GATK's VariantFiltration tool to filter the variants called previously.
 Here we hard-filter variants based on certain criteria. In this particular example we will use:
 -Genotype Quality less than 30.0: GQ < 30 to tag variants with low genotype quality
@@ -198,7 +208,14 @@ java -jar software/gatk-package-4.0.4.0-local.jar VariantFiltration -V sample1.v
 output vcf file. The variants that passed the filters will have a PASS label on their FILTER column.
 Similarly to the deduplication step the concept here is to tag the problematic entries rather than 
 to delete them."""
- 
+
+## Inspect the output vcf file sample1.filtered.vcf
+"""To view the contents of the output filtered vcf file you can navigate through it by typing:"""
+less sample1.filtered.vcf
+
+"""Or you can open it in the notepad editor from the Windows environment."""
+
+
 ##################################         PART5      ###################################################       
 ######################### Functional annotation of the called genetic variants  #########################
 #########################################################################################################
@@ -206,23 +223,51 @@ to delete them."""
 """This is the part of the pipeline that we will functionally annotate the called genetic variants, an 
 essential step to try predict the effect or function of an individual variant.
 
-Given a list of variants and their genomic coordinates we will perform:
+Given a list of variants and their genomic coordinates (like the vcf file you just inspected) we will perform functional annotations 
+for each one of them.
 
-Gene-based annotations: Identify which genes and proteins will be affected by the reported variant 
-	Example databases: RefSeq genes, UCSC genes, ENSEMBL genes, GENCODE genes, AceView genes, ... .
+Variants are annotated to annotation databases. An annotation database can be one of the following types:
+- Gene-based annotations: Identify which genes and proteins will be affected by the reported variant   
+Example databases: RefSeq genes, UCSC genes, ENSEMBL genes, GENCODE genes, AceView genes, ... .
 
-Region-based annotations: Identify specific genomic regions possibly affected by the reported variant
+- Region-based annotations: Identify specific genomic regions possibly affected by the reported variant
 such as promoters, transcription f\actor binding sites, DNAse I hypersensitivity sites and others. 
 
-Filter-based annotations: Cross listed variants with specific databases containing information about
-them. For example, check which variants are reported in gnomAD populations and what's the allele  
+- Filter-based annotations: Cross listed variants with specific databases containing information about
+them.  
+For example, check which variants are reported in gnomAD populations and what's the allele  
 frequency for these variants in this database or calculate a CADD score for each variant.
 	Other example databases: 1000 Genome Project, Exome Aggregation Consortium (ExAC), 
-	Genome Aggregation Database (gnomAD), CADD score, PolyPhen score. 
+	Genome Aggregation Database (gnomAD), CADD score, PolyPhen score.
+
+We are going to use databases from all of the above three catergories to annotate our variants.
 
 The goal is to create a single file containing several columns with annotation information for each 
 variant.
 """
+
+"""For this part we are not going to use a command line tool. We are going to use a web-based tool instead
+which is called [Variant Effect Predictor (VEP)](https://www.ensembl.org/vep) by Ensembl"""
+
+###Instructions
+""" We are using an online freely available annotation tool: (ensemble VEP)
+1. Open an internet browser (Mozilla Firefox, Google Chrome)
+
+2. Navigate to https://www.ensembl.org/Multi/Tools/VEP
+
+3. Fill the job form using:
+	- Name for this job: sgul_workshop_ followed by your initials (e.g. sgul_workshop_DG)
+	- Input data -> Or upload file: -> Choose file -> Navigate and select your sample1.filtered.vcf.gz file
+	- Transcript database to use: Ensembl/GENCODE transcripts
+	- Make sure you will leave Additional configurations field untouched using the pre-defined default fields.
+
+4. Click RUN
+
+5. Wait for the job to finish
+
+6. When finished, click [View results]
+"""
+
 
 ##################################         PART6      ###################################################       
 ############################## Aligment & Variants visualisation with IGV ###############################
