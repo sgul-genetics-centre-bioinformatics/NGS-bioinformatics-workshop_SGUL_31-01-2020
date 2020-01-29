@@ -281,18 +281,15 @@ This is the part of the pipeline that we will visualise the alignments generated
 
 For this part we are going to use the linux version of the [IGV application](https://igv.org/)
 
-- At the linux terminal type:
+1. At the linux terminal type:
 ```bash
 software/igv.sh
 ```
-
-- Open the IGV software (A window will normally open in your windows environment, please check the task bar).
-  
-- Go to `Genomes` and then select `Load genomes from file...`
-- Locate the chrM.fa in your references directory and open.
-  
-- Go to `File` and then select `Load from file...`
-- Locate the `sample1_sorted_unique_recalibrated.bam` and open.
+2. Open the IGV software (A window will normally open in your windows environment, please check the task bar).
+3. Go to `Genomes` and then select `Load genomes from file...`
+	* Locate the chrM.fa in your references directory and open.
+4. Go to `File` and then select `Load from file...`
+	* Locate the `sample1_sorted_unique_recalibrated.bam` and open.
   
 You can also load a teack showing the actual called variants:
 - Go to `File` and then select `Load from file...`
