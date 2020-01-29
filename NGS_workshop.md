@@ -287,17 +287,19 @@ software/igv.sh
 ```
 
 - Open the IGV software (A window will normally open in your windows environment, please check the task bar).
-
+  
 - Go to `Genomes` and then select `Load genomes from file...`
 - Locate the chrM.fa in your references directory and open.
-
+  
 - Go to `File` and then select `Load from file...`
 - Locate the `sample1_sorted_unique_recalibrated.bam` and open.
-
+  
 You can also load a teack showing the actual called variants:
 - Go to `File` and then select `Load from file...`
 - Locate the `sample1.filtered.vcf.gz` and open.
-
+  
+  
+  
 There is also an [online version of IGV](https://igv.org/app/), which you can use without any installation.
 
 
