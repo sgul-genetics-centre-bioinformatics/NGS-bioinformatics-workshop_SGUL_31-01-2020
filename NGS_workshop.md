@@ -149,7 +149,7 @@ defined as originating from a single fragment of DNA. Duplicates can arise durin
 library construction using PCR. Read more [here](https://gatk.broadinstitute.org/hc/en-us/articles/360036350292-MarkDuplicates-Picard-)
 ```bash
 java -jar software/gatk-package-4.0.4.0-local.jar MarkDuplicates -I sample1_sorted.bam -O sample1_sorted_unique.bam \
-	-M sample1_picard_metrics.txt
+-M sample1_picard_metrics.txt
 ```
 
 ---
