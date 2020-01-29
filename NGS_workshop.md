@@ -151,7 +151,8 @@ data to the reference genome
 We will align our cleaned FASTQ files to the reference mitochondrial genome using BWA with the following
 command:
 ```bash
-software/bwa mem reference/chrM.fa sample1_out.R1.fq.gz sample1_out.R2.fq.gz -R '@RG\tID:sample1\tSM:sample1\tLB:sample1\tPL:ILLUMINA' \ -o sample1.sam 
+software/bwa mem reference/chrM.fa sample1_out.R1.fq.gz sample1_out.R2.fq.gz \
+-R '@RG\tID:sample1\tSM:sample1\tLB:sample1\tPL:ILLUMINA' -o sample1.sam 
 ```
 The software BWA mem has taken our cleaned fastq files, the indexed mitochondrial reference sequence
 as arguments and generated the alignemnt file in sequence alignment format (.SAM) as output
