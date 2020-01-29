@@ -12,6 +12,43 @@ Room H5.2
 - [SGUL Bioinformatics Unit](http://bioinformatics.sgul.ac.uk/)
 - [SGUL Genetics Centre Bioinformatics](https://github.com/sgul-genetics-centre-bioinformatics)
 
+## Workshop set-up
+For this workshop we are going to use the command line enviroment of the University's STATS3 cluster which is accessible to all at SGUL with valid SGUL credentials.
+
+Instructions:
+1. Open MobaXterm
+2. Login by typing:
+```bash
+ssh yourusername@stats3.sgul.ac.uk
+```
+Type your password when prompted and press Enter.
+
+3. This login defaults to your home (H:) drive where we will be working.
+
+4. Inside STATS3 command line type:
+```bash
+git clone https://github.com/sgul-genetics-centre-bioinformatics/NGS-bioinformatics-workshop_SGUL_31-01-2020.git
+```
+
+5. Wait for the directory to download and the move inside the directory:
+```bash
+cd NGS-bioinformatics-workshop_SGUL_31-01-2020
+```
+
+You are now ready to start this workshop! Relax and enjoy :)
+
+## Learning Objectives
+- Quick overview of next generation sequencing 
+- Linux command line
+- Next-generation sequencing software/tools 
+	- Genome reference download and index
+	- Raw sequencing reads pre-processing and quality control
+	- Reads alignment to the reference genome
+	- Alignment quality control and refinement
+	- Variant calling and filtration
+	- Annotation of the called variants
+	- Visualisation of alignments and called variants
+
 ## Hands-on Tutorial
 
 ---
