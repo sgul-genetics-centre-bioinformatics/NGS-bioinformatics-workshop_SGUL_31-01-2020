@@ -253,19 +253,50 @@ variant.
 For this part we are not going to use a command line tool. We are going to use a web-based tool instead
 which is called [Variant Effect Predictor (VEP)](https://www.ensembl.org/vep) by Ensembl
 
+VEP also has a [command line stand alone version](http://www.ensembl.org/info/docs/tools/vep/script/vep_download.html) which can be freely downloaded and used. 
+
 **Please follow the instructions below:**
-1. Open an internet browser (Mozilla Firefox, Google Chrome)
+1. Open an internet browser (Mozilla Firefox, Google Chrome).
 
-2. Navigate to https://www.ensembl.org/Multi/Tools/VEP
+2. Navigate to https://www.ensembl.org/Multi/Tools/VEP.
 
-3. Fill the job form using:
-	- Name for this job: sgul_workshop_ followed by your initials (e.g. sgul_workshop_DG)
-	- Input data -> Or upload file: -> Choose file -> Navigate and select your sample1.filtered.vcf.gz file
-	- Transcript database to use: Ensembl/GENCODE transcripts
+3. **! Double check the human genome build you are using ! (Here, we are using hg38/GRCh38)**.
+
+4. Fill the job form using:
+	- Name for this job: `sgul_workshop_` followed by your initials (e.g. `sgul_workshop_DG`).
+	- Input data -> Or upload file: -> Choose file -> Navigate and select your `sample1.filtered.vcf.gz` file.
+	- Transcript database to use: Ensembl/GENCODE transcripts.
 	- Make sure you will leave Additional configurations field untouched using the pre-defined default fields.
 
-4. Click RUN
+4. Click RUN.
 
-5. Wait for the job to finish
+5. Wait for the job to finish.
 
-6. When finished, click [View results]
+6. When finished, click [View results].
+
+### Part 6: Aligment & Variants visualisation with [Integrative Genomics Viewer (IGV)](https://igv.org/)
+
+This is the part of the pipeline that we will visualise the alignments generated in **Part 3** and the filtered variant calls generated in **Part 4**.
+
+For this part we are going to use the linux version of the [IGV application](https://igv.org/)
+
+- At the linux terminal type:
+```bash
+software/igv.sh
+```
+
+- Open the IGV software (A window will normally open in your windows environment, please check the task bar).
+
+- Go to `Genomes` and then select `Load genomes from file...`
+- Locate the chrM.fa in your references directory and open.
+
+- Go to `File` and then select `Load from file...`
+- Locate the `sample1_sorted_unique_recalibrated.bam` and open.
+
+You can also load a teack showing the actual called variants:
+- Go to `File` and then select `Load from file...`
+- Locate the `sample1.filtered.vcf.gz` and open.
+
+There is also an [online version of IGV](https://igv.org/app/), which you can use without any installation.
+
+
