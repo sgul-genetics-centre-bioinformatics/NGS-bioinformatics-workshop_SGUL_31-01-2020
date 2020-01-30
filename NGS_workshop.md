@@ -13,24 +13,25 @@ Room H5.2
 - [SGUL Genetics Centre Bioinformatics](https://github.com/sgul-genetics-centre-bioinformatics)
 
 ## Workshop set-up
-For this workshop we are going to use the command line enviroment of the University's STATS3 cluster which is accessible to all at SGUL with valid SGUL credentials.
+For this workshop we are going to use the command line enviroment of the University's STATS3 server, which is accessible to all staff/students with valid SGUL credentials.
 
 Instructions:
-1. Open MobaXterm
-2. Login by typing:
+1. Open File Explorer, locate the N: drive, find and run MobaXterm_Personal_10.4.exe
+2. Click "Start Local Terminal"
+3. Login by typing:
 ```bash
 ssh yourusername@stats3.sgul.ac.uk
 ```
-Type your password when prompted and press Enter.
+Type your password when prompted and press Enter (Note that your password will not be printied to the screen as you type).
 
-3. This login defaults to your home (H:) drive where we will be working.
+4. This login defaults to your home (H:) drive where we will be working.
 
-4. Inside STATS3 command line type:
+5. Inside the STATS3 command line type:
 ```bash
 git clone https://github.com/sgul-genetics-centre-bioinformatics/NGS-bioinformatics-workshop_SGUL_31-01-2020.git
 ```
 
-5. Wait for the directory to download and the move inside the directory:
+6. Wait for the directory to download and then move inside the directory:
 ```bash
 cd NGS-bioinformatics-workshop_SGUL_31-01-2020
 ```
@@ -45,7 +46,7 @@ You are now ready to start this workshop! Relax and enjoy :)
 	- Raw sequencing reads pre-processing and quality control
 	- Reads alignment to the reference genome
 	- Alignment quality control and refinement
-	- Variant calling and filtration
+	- Variant calling and filtering
 	- Annotation of the called variants
 	- Visualisation of alignments and called variants
 
@@ -53,18 +54,18 @@ You are now ready to start this workshop! Relax and enjoy :)
 
 ---
 ### Part 1 - Preparing our mitochondrial reference sequence fasta files
-#### Download the human mitochondrial refernce sequence:
+#### Download the human mitochondrial reference sequence:
 ```bash
 mkdir reference
 wget --timestamping 'ftp://hgdownload.cse.ucsc.edu/goldenPath/hg38/chromosomes/chrM.fa.gz' -O reference/chrM.fa.gz
 ```
 ---
-#### Unzip the compressed chrM fasta txt file
+#### Unzip the compressed chrM fasta text file
 ```bash
 gunzip reference/chrM.fa.gz
 ```
 ---
-#### View the top 10 lines of the file with the linux 'head' commands
+#### View the top 10 lines of the file with the linux 'head' command
 ```bash
 head reference/chrM.fa
 ```
@@ -76,8 +77,8 @@ For the aligment algorithms of BWA, we first need to construct the FM-index for 
 software/bwa index reference/chrM.fa
 ```
 ---
-#### Prepare the FASTA file for use as a referenence for the [genome analysis toolkit (GATK)](https://gatk.broadinstitute.org/hc/en-us/articles/360036194592-Getting-started-with-GATK4)  
-Create two needed files to access and safety check access to the reference files:
+#### Prepare the FASTA file for use as a reference for the [genome analysis toolkit (GATK)](https://gatk.broadinstitute.org/hc/en-us/articles/360036194592-Getting-started-with-GATK4)  
+Create two files needed to access and safety check access to the reference files:
 - a .DICT dictionary of the contig names and sizes 
 - a .FAI fasta index file to allow efficient random access to the reference bases.
 You have to generate these files in order to be able to use a Fasta file as reference:
@@ -89,11 +90,10 @@ a particular reference base at contig:pos is in the fasta file:
 ```bash
 software/samtools faidx reference/chrM.fa
 ```
-This produces a text file with one record per line for each of the fasta contigs. Each record is of the: 
+This produces a text file with one record per line for each of the fasta contigs. Each record is of the format: 
 contig, size, location, basesPerLine, bytesPerLine.
 
-Creating the sequence dictionary file 
-We use CreateSequenceDictionary.jar from Picard tools to create a .dict file from a fasta file:
+Creating the sequence dictionary file. We use CreateSequenceDictionary.jar from Picard tools to create a .dict file from a fasta file:
 ```bash
 java -jar software/gatk-package-4.0.4.0-local.jar CreateSequenceDictionary -R reference/chrM.fa -O reference/chrM.dict
 ```
@@ -103,11 +103,11 @@ This produces a SAM-style header file; simply describing the contents of our fas
 ### Part 2 - Quality control of our mitochondrial NGS sequence data prior to alignments
 #### View and inspect a FASTQ file
 The pile of reads coming out of the sequencer is stored in FASTQ files. As a typical paired-end
-sequencing experiment, each sequenced sample will produce two FASTQ files; One for the first pair of reads
-and one for the second pair of reads.  
+sequencing experiment, each sequenced sample will produce two FASTQ files; One for the first in the pair 
+and one for the second in each pair of reads.  
 
 FASTQ files are usually quite big files containing information for all the reads produced. To get an insight
-on how a FASTQ file look like we can simply open its first 12 lines:
+into how a FASTQ file looks, we can simply open the first 12 lines:
 ```bash
 head -n 12 sample1_r1.fastq
 ```
@@ -131,7 +131,7 @@ sample1_results.html --json sample1_results.json --report_title sample1_results
 ```
 
 #### Alternative way of visualising the quality control of the reads with [FASTQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
-An alternative way of visualising the quality of our sequence fastq data is fastqc. This tool will not 
+An alternative way of visualising the quality of our sequence fastq data is with fastqc. This tool will not 
 perform any trimming or any other data processing. It will simply create a quality report in HTML format for the raw and the filtered reads.
 ```bash
 software/fastqc sample1_r1.fastq sample1_r2.fastq sample1_out.R1.fq.gz sample1_out.R2.fq.gz
@@ -145,7 +145,7 @@ given a report like this. To learn more click [here](http://www.bioinformatics.b
 [BWA](http://bio-bwa.sourceforge.net/) is a software package for mapping DNA sequences against a large reference genome, such as the 
 human genome.  
 
-Illumina/454/IonTorrent [paired-end reads](https://emea.illumina.com/science/technology/next-generation-sequencing/plan-experiments/paired-end-vs-single-read.html) longer than ~70bp we use BWA MEM algorithm to align the fastq 
+For Illumina [paired-end reads](https://emea.illumina.com/science/technology/next-generation-sequencing/plan-experiments/paired-end-vs-single-read.html) longer than ~70bp we use the BWA MEM algorithm to align the fastq 
 data to the reference genome
 
 We will align our cleaned FASTQ files to the reference mitochondrial genome using BWA with the following
@@ -155,11 +155,11 @@ software/bwa mem reference/chrM.fa sample1_out.R1.fq.gz sample1_out.R2.fq.gz \
 -R '@RG\tID:sample1\tSM:sample1\tLB:sample1\tPL:ILLUMINA' -o sample1.sam 
 ```
 The software BWA mem has taken our cleaned fastq files, the indexed mitochondrial reference sequence
-as arguments and generated the alignemnt file in sequence alignment format (.SAM) as output
+as arguments and generated the alignment file in sequence alignment format (.SAM) as output
 
 ---
 #### Converting the .SAM output to the compressed common binary alignment format (.BAM)
-BAM format has a lower data footprint than sam (smaller size on the disk), yet retains all of the same
+BAM format has a lower data footprint than SAM (smaller size on the disk), yet retains all of the same
 information
 ```bash
 software/samtools view -Sb sample1.sam -o sample1.bam
@@ -211,15 +211,15 @@ java -jar software/gatk-package-4.0.4.0-local.jar ApplyBQSR -I sample1_sorted_un
 --bqsr-recal-file recal_data_table.txt -O sample1_sorted_unique_recalibrated.bam
 ```
 ---
-### Part 4: Variant Calling: Identifying single nuclotide variants and small indels in our aligned mitochndrial data
+### Part 4: Variant Calling: Identifying single nucleotide variants and small indels in our aligned mitochndrial data
 This is the part of the pipeline that we will use the alignment data to call variants, i.e., differences 
-between the aligned reads and the used genome reference.
+between the aligned reads and the reference genome.
 
 2 steps are essential for variant calling:
 #### 1. HaplotypeCaller step
 The GATK pipeline calls variants (SNPs and small INDELS simultaneously) using a tool called HaplotypeCaller.
 This tool look through the alignments for regions with signs of variation (active regions). When it finds
-an active region region like this, it discards the existing alignment and completely reassembles the reads
+an active region, it discards the existing alignment and completely reassembles the reads
 in that region making the calling more accurate.
 ```bash
 java -jar software/gatk-package-4.0.4.0-local.jar HaplotypeCaller -I sample1_sorted_unique_recalibrated.bam \
@@ -236,7 +236,7 @@ Here we hard-filter variants based on certain criteria. In this particular examp
 -Approximate read depth less than 6: DP < 6 to tag variants with low read coverage
 -Strand Odds Ratio more than 10: SOR > 10 to tag variants with strand bias
 
-This tool will TAG and NOT REMOVE the variants that false the Quality Control (fullfill at least one of
+This tool will TAG and NOT REMOVE the variants that fail the Quality Control (fullfill at least one of
 the above criteria).
 ```bash
 java -jar software/gatk-package-4.0.4.0-local.jar VariantFiltration -V sample1.vcf -R reference/chrM.fa \
@@ -247,8 +247,8 @@ java -jar software/gatk-package-4.0.4.0-local.jar VariantFiltration -V sample1.v
 -O sample1.filtered.vcf
 ```
 
-The filtered/tagged variants will have filter-specific information on the FILTER column of the 
-output vcf file. The variants that passed the filters will have a PASS label on their FILTER column.
+The filtered/tagged variants will have filter-specific information in the FILTER column of the 
+output vcf file. The variants that passed the filters will have a PASS label in their FILTER column.
 Similarly to the deduplication step the concept here is to tag the problematic entries rather than 
 to delete them.
 
@@ -263,17 +263,17 @@ Or you can open it in the notepad editor from the Windows environment.
 ---
 ### Part 5 - Functional annotation of the called genetic variants
 This is the part of the pipeline that we will functionally annotate the called genetic variants, an 
-essential step to try predict the effect or function of an individual variant.
+essential step to try to predict the effect or function of an individual variant.
 
 Given a list of variants and their genomic coordinates (like the vcf file you just inspected) we will perform functional annotations 
 for each one of them.
 
-Variants are annotated to annotation databases. An annotation database can be one of the following types:
+Variants are annotated with annotation databases. An annotation database can be one of the following types:
 - Gene-based annotations: Identify which genes and proteins will be affected by the reported variant   
 Example databases: RefSeq genes, UCSC genes, ENSEMBL genes, GENCODE genes, AceView genes, ... .
 
 - Region-based annotations: Identify specific genomic regions possibly affected by the reported variant
-such as promoters, transcription f\actor binding sites, DNAse I hypersensitivity sites and others. 
+such as promoters, transcription factor binding sites, DNAse I hypersensitivity sites and others. 
 
 - Filter-based annotations: Cross listed variants with specific databases containing information about
 them.  
@@ -304,7 +304,7 @@ VEP also has a [command line stand alone version](http://www.ensembl.org/info/do
 	- Name for this job: `sgul_workshop_` followed by your initials (e.g. `sgul_workshop_DG`).
 	- Input data -> Or upload file: -> Choose file -> Navigate and select your `sample1.filtered.vcf.gz` file.
 	- Transcript database to use: Ensembl/GENCODE transcripts.
-	- Make sure you will leave Additional configurations field untouched using the pre-defined default fields.
+	- Make sure you will leave the Additional configurations field untouched using the pre-defined default fields.
 
 4. Click RUN.
 
@@ -329,7 +329,7 @@ software/igv.sh
 4. Go to `File` and then select `Load from file...`
 	* Locate the `sample1_sorted_unique_recalibrated.bam` and open.
   
-You can also load a teack showing the actual called variants:
+You can also load a track showing the actual called variants:
 - Go to `File` and then select `Load from file...`
 - Locate the `sample1.filtered.vcf.gz` and open.
   
