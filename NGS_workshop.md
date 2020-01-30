@@ -254,7 +254,9 @@ to delete them.
 
 ---
 #### Inspect the output vcf file sample1.filtered.vcf
-To view the contents of the output filtered vcf file you can navigate through it by typing:
+To view the contents of the output filtered vcf file you can navigate through it.  
+Apart from the head and more commands we saw earlier, you can also use the `less` command in
+Linux to inspect the contents of a file:
 ```bash
 less sample1.filtered.vcf
 ```
@@ -302,7 +304,7 @@ VEP also has a [command line stand alone version](http://www.ensembl.org/info/do
 
 4. Fill the job form using:
 	- Name for this job: `sgul_workshop_` followed by your initials (e.g. `sgul_workshop_DG`).
-	- Input data -> Or upload file: -> Choose file -> Navigate and select your `sample1.filtered.vcf.gz` file.
+	- Input data -> Or upload file: -> Choose file -> Navigate and select your `sample1.filtered.vcf` file.
 	- Transcript database to use: Ensembl/GENCODE transcripts.
 	- Make sure you will leave the Additional configurations field untouched using the pre-defined default fields.
 
@@ -331,7 +333,7 @@ software/igv.sh
   
 You can also load a track showing the actual called variants:
 - Go to `File` and then select `Load from file...`
-- Locate the `sample1.filtered.vcf.gz` and open.
+- Locate the sample1.filtered.vcf` and open.
   
   
   
