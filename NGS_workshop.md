@@ -33,7 +33,7 @@ Instructions:
 	This login defaults to your home (H:) drive where we will be working.  
 	Move inside your working directory by typing:
 	```bash
-	/homedirs8/workshop/<username>
+	cd /homedirs8/workshop/<username>
 	```
 
 5. Type:
