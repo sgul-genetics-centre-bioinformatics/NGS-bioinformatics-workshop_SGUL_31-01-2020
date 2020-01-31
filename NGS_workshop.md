@@ -346,7 +346,7 @@ software/igv.sh
   
 You can also load a track showing the actual called variants:
 - Go to `File` and then select `Load from file...`
-- Locate the sample1.filtered.vcf` and open.
+- Locate the `sample1.filtered.vcf` and open.
   
   
   
