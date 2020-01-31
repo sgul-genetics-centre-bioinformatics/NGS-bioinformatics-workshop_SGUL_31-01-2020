@@ -36,6 +36,11 @@ git clone https://github.com/sgul-genetics-centre-bioinformatics/NGS-bioinformat
 cd NGS-bioinformatics-workshop_SGUL_31-01-2020
 ```
 
+7. You can view a list of all the contents of the directory you are in, by typing:
+```bash
+ls
+```
+
 You are now ready to start this workshop! Relax and enjoy :)
 
 ## Learning Objectives
