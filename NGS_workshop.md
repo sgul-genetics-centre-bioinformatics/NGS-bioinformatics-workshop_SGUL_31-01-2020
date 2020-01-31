@@ -24,9 +24,18 @@ ssh yourusername@stats3.sgul.ac.uk
 ```
 Type your password when prompted and press Enter (Note that your password will not be printied to the screen as you type).
 
+**IF YOU ARE PHD STUDENT OR STAFF**:
 4. This login defaults to your home (H:) drive where we will be working.
+Move on to next step.
 
-5. Inside the STATS3 command line type:
+**IF YOU ARE UNDERGRADUATE OR POSTGRADUATE STUDENT**:
+4. This login defaults to your home (H:) drive where we will be working.
+Move inside your working directory by typing:
+```bash
+/homedirs8/workshop/<username>
+```
+
+5. Type:
 ```bash
 git clone https://github.com/sgul-genetics-centre-bioinformatics/NGS-bioinformatics-workshop_SGUL_31-01-2020.git
 ```
@@ -356,5 +365,39 @@ You can also load a track showing the actual called variants:
   
   
 There is also an [online version of IGV](https://igv.org/app/), which you can use without any installation.
+
+
+# Quiz
+If you didn't have enough already, time to spend some time by playing around with this Quiz!
+
+Have fun and **Don't be shy**. It's normal to get stuck in many of these questions, so feel free to grab a demonstrator and seek advice! :)
+
+---
+1. In the VEP annotation results table, find the genomic coordinates of the missense variant with the highest Polyphen score.
+
+---
+2. Download the annotated vcf file using the VCF download button on the upper-right corner.
+
+---
+3. Get the genomic position of the variant you selected in question 1 and extract this variant’s information from the sample1.filtered.vcf file (using the [`grep` command](https://linuxtechlab.com/learning-grep-command-with-examples/)) and save it into a new file ([using the > symbol](https://askubuntu.com/questions/420981/how-do-i-save-terminal-output-to-a-file)).
+
+---
+4. By looking into the new file you created:
+	- Find out if the sequenced sample is homozygous or heterozygous for this variant.
+	- Report the Strand Odds Ratio for this variant.
+	- Report the Genotype Quality and the Quality of Depth values for this variant.  
+Hint! Check the .VCF specification [here](https://samtools.github.io/hts-specs/VCFv4.2.pdf) and Part4 of the workshop.
+
+---
+5. Load the IGV software with the alignment (.BAM) file and the variant calling (.VCF) file.
+	- Point the IGV viewer to the previously selected variant.
+	- Does it seem real to you? What do you think?  
+Hint: Part 6 of the workshop.
+
+---
+6. Count the reads covering the position of the selected variants in the alignment file (.BAM) using the samtools tool.  
+Hint! You can find samtools in software/samtools).  
+Hint! Check samtools documentation here: http://www.htslib.org/doc/samtools.html.  
+Hint! Use the samtools view function.  
 
 
