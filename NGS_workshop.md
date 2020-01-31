@@ -130,12 +130,24 @@ software/fastp -i sample1_r1.fastq -I sample1_r2.fastq -o sample1_out.R1.fq.gz -
 sample1_results.html --json sample1_results.json --report_title sample1_results
 ```
 
+To view the generated .HTML report with firefox type:
+```bash
+firefox sample1_results.html
+```
+If this command doesn't work, you can navigate to the sample1_results.html file through your Windows environment and open the file with a browser (Google Chrome, Mozilla Firefox, etc...)
 #### Alternative way of visualising the quality control of the reads with [FASTQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
 An alternative way of visualising the quality of our sequence fastq data is with fastqc. This tool will not 
 perform any trimming or any other data processing. It will simply create a quality report in HTML format for the raw and the filtered reads.
 ```bash
 software/fastqc sample1_r1.fastq sample1_r2.fastq sample1_out.R1.fq.gz sample1_out.R2.fq.gz
 ```
+
+To view the generated .HTML report with firefox type:
+```bash
+firefox sample1_out.R1_fastqc.html
+```
+If this command doesn't work, you can navigate to the sample1_out.R1_fastqc.html file through your Windows environment and open the file with a browser (Google Chrome, Mozilla Firefox, etc...)
+
 This is the most common way of visualising sequencing reads quality and most of you have been or will be
 given a report like this. To learn more click [here](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/).  
 
