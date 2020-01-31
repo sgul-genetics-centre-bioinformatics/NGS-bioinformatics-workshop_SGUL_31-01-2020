@@ -24,16 +24,17 @@ ssh yourusername@stats3.sgul.ac.uk
 ```
 Type your password when prompted and press Enter (Note that your password will not be printied to the screen as you type).
 
-**IF YOU ARE PHD STUDENT OR STAFF**:
-4. This login defaults to your home (H:) drive where we will be working.
-Move on to next step.
+4.  
+	**IF YOU ARE PHD STUDENT OR STAFF**:    
+	This login defaults to your home (H:) drive where we will be working.  
+	Move on to next step.
 
-**IF YOU ARE UNDERGRADUATE OR POSTGRADUATE STUDENT**:
-4. This login defaults to your home (H:) drive where we will be working.
-Move inside your working directory by typing:
-```bash
-/homedirs8/workshop/<username>
-```
+	**IF YOU ARE UNDERGRADUATE OR POSTGRADUATE STUDENT**:  
+	This login defaults to your home (H:) drive where we will be working.  
+	Move inside your working directory by typing:
+	```bash
+	/homedirs8/workshop/<username>
+	```
 
 5. Type:
 ```bash
