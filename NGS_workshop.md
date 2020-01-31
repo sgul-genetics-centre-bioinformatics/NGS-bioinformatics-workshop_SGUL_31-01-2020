@@ -130,7 +130,7 @@ software/fastp -i sample1_r1.fastq -I sample1_r2.fastq -o sample1_out.R1.fq.gz -
 sample1_results.html --json sample1_results.json --report_title sample1_results
 ```
 
-To view the generated .HTML report with firefox type:
+To view the generated .HTML report with firefox type the command below and wait for a few seconds.
 ```bash
 firefox sample1_results.html
 ```
@@ -142,7 +142,7 @@ perform any trimming or any other data processing. It will simply create a quali
 software/fastqc sample1_r1.fastq sample1_r2.fastq sample1_out.R1.fq.gz sample1_out.R2.fq.gz
 ```
 
-To view the generated .HTML report with firefox type:
+To view the generated .HTML report with firefox type the command below and wait for a few seconds.
 ```bash
 firefox sample1_out.R1_fastqc.html
 ```
