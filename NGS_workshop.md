@@ -22,9 +22,9 @@ Instructions:
 ```bash
 ssh yourusername@stats3.sgul.ac.uk
 ```
-Type your password when prompted and press Enter (Note that your password will not be printied to the screen as you type).
+	Type your password when prompted and press Enter (Note that your password will not be printied to the screen as you type).
 
-4.  
+4.    
 	**IF YOU ARE PHD STUDENT OR STAFF**:    
 	This login defaults to your home (H:) drive where we will be working.  
 	Move on to next step.
