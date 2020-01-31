@@ -134,6 +134,7 @@ To view the generated .HTML report with firefox type the command below and wait 
 ```bash
 firefox sample1_results.html
 ```
+
 If this command doesn't work, you can navigate to the sample1_results.html file through your Windows environment and open the file with a browser (Google Chrome, Mozilla Firefox, etc...)
 #### Alternative way of visualising the quality control of the reads with [FASTQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
 An alternative way of visualising the quality of our sequence fastq data is with fastqc. This tool will not 
@@ -149,7 +150,7 @@ firefox sample1_out.R1_fastqc.html
 If this command doesn't work, you can navigate to the sample1_out.R1_fastqc.html file through your Windows environment and open the file with a browser (Google Chrome, Mozilla Firefox, etc...)
 
 This is the most common way of visualising sequencing reads quality and most of you have been or will be
-given a report like this. To learn more click [here](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/).  
+given a report like this. To learn more click [here](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/).  
 
 ---
 ### Part 3 - Alignment of the mitochndrial fastq sequence data to the mitochondrial reference sequence using [BWA](http://bio-bwa.sourceforge.net/)
